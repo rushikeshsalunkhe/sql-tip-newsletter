@@ -1,0 +1,5 @@
+Generate a “SQL Tip of the Day” entry including:
+1. One‐line scenario
+2. Problem statement + schema
+3. Commented solution SQL
+4. A performance note
