@@ -1,6 +1,7 @@
 name: "SQL Tip Newsletter"
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 2 * * *"   # Generate tip daily at 2 AM UTC
     - cron: "0 6 * * *"   # Send tip daily at 6 AM UTC
