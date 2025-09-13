@@ -2,33 +2,36 @@ import os
 import openai
 import datetime
 
-# Load API key from environment variable
+# Load API key
 openai.api_key = os.getenv("OPENAI_API_KEY")
-
 
 # Read prompt template
 with open("prompt.txt") as f:
-    prompt = f.read()
+    prompt_text = f.read()
 
-# Generate tip using OpenAI GPT-3.5 Turbo
-response = openai.Completion.create(
+# Prepare the messages parameter for chat completion
+messages = [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": prompt_text}
+]
+
+# Generate tip using ChatCompletion API
+response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
-    prompt=prompt,
+    messages=messages,
     max_tokens=500,
     temperature=0.7
 )
 
-# Extract generated content
-content = response.choices[0].text.strip()
+content = response.choices[0].message.content.strip()
 
-# Prepare filename with today's date
+# Save to file
 today = datetime.date.today().isoformat()
 filename = f"tips/{today}.md"
 
-# Ensure tips folder exists
+import os
 os.makedirs("tips", exist_ok=True)
 
-# Write the generated tip to markdown file with front matter
 with open(filename, "w", encoding="utf-8") as f:
     f.write(f"---\ndate: {today}\nstatus: draft\n---\n\n")
     f.write(content)
